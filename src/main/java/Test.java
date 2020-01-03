@@ -1,19 +1,53 @@
-import com.jasu.ThreadDemo;
+import java.util.concurrent.*;
 
 /**
  * @author @Jasu
  * @date 2018-07-11 15:45
  */
 public class Test {
+    static ExecutorService service = Executors.newFixedThreadPool(3);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        for (int i = 0; i < 9; i++) {
+            CompletableFuture.runAsync(new A(),service).thenRunAsync(new B(),service).thenRunAsync(new C(),service).get();
+        }
 
-        ThreadDemo threadDemo = new ThreadDemo();
-
-        Thread t1 = new Thread(threadDemo, "t1");
-        Thread t2 = new Thread(threadDemo, "t2");
-
-        t1.start();
-        t2.start();
     }
+
+    static class A implements Runnable {
+        @Override
+        public void run() {
+            try {
+                TimeUnit.SECONDS.sleep(3);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("A " + Thread.currentThread().getName());
+        }
+    }
+
+    static class B implements Runnable {
+        @Override
+        public void run() {
+            try {
+                TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("B " + Thread.currentThread().getName());
+        }
+    }
+    static class C implements Runnable {
+        @Override
+        public void run() {
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("C " + Thread.currentThread().getName());
+        }
+    }
+
+
 }

@@ -6,8 +6,6 @@ package com.jasu.test;
  */
 public class TheadDemo implements Runnable {
 
-
-
     @Override
     public void run() {
 

@@ -19,6 +19,10 @@
  * 排序链表合并(2个与多个)
  *{@link com.jasu.algorithm.leetcode._21_}
  *{@link com.jasu.algorithm.leetcode._23_}
+ *
+ * 跳表
+ *
+ * {@link com.jasu.algorithm.extra.Extra_1_SkipList}
  * @date 2019-04-12 11:28
  */
 package com.jasu.datastructure.linkedlist;
