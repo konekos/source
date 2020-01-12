@@ -12,7 +12,6 @@ public class ThreadDemo implements Runnable{
         count = 0;
     }
 
-    @Override
 //循环打印
     public void run() {
         System.out.println("before syn");
