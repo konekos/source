@@ -1,12 +1,11 @@
 package com.jasu.nio._08_Selectors;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
-import java.nio.channels.ServerSocketChannel;
-import java.nio.channels.SocketChannel;
+import java.nio.channels.*;
 import java.util.Iterator;
 
 /**
@@ -15,8 +14,7 @@ import java.util.Iterator;
  */
 public class SelectorServer {
 
-    final static int DEFAULT_PORT = 9999;
-    static ByteBuffer bb = ByteBuffer.allocateDirect(8);
+    private final static int DEFAULT_PORT = 9999;
 
     public static void main(String[] args) throws IOException {
         int port = DEFAULT_PORT;
@@ -31,7 +29,7 @@ public class SelectorServer {
         Selector s = Selector.open();
         ssc.register(s, SelectionKey.OP_ACCEPT);
 
-        while (true) {
+        for (;;){
             int n = s.select();
             if (n == 0) {
                 continue;
@@ -46,13 +44,10 @@ public class SelectorServer {
                         continue;
                     }
                     System.out.println("Receiving connection");
-                    bb.clear();
-                    bb.putLong(System.currentTimeMillis());
-                    bb.flip();
-                    System.out.println("Writing current time");
-                    while (bb.hasRemaining()) {
-                        sc.write(bb);
-                    }
+                    File file = new File("C:\\Users\\hasee\\Desktop\\1.txt");
+                    FileChannel fileChannel = new FileInputStream(file).getChannel();
+                    fileChannel.transferTo(0, file.length(), sc);
+
                     sc.close();
                 }
                 iterator.remove();

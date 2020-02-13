@@ -3,7 +3,10 @@ package com.jasu.nio._08_Selectors;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.nio.channels.SocketChannel;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 /**
@@ -12,8 +15,8 @@ import java.util.Date;
  */
 public class SelectorClient {
 
-    final static int DEFAULT_PORT = 9999;
-    static ByteBuffer bb = ByteBuffer.allocateDirect(8);
+    private final static int DEFAULT_PORT = 9999;
+    private static ByteBuffer bb = ByteBuffer.allocateDirect(1024);
 
     public static void main(String[] args) {
         int port = DEFAULT_PORT;
@@ -24,16 +27,13 @@ public class SelectorClient {
             SocketChannel sc = SocketChannel.open();
             InetSocketAddress addr = new InetSocketAddress("localhost", port);
             sc.connect(addr);
-            long time = 0;
+
             while (sc.read(bb) != -1) {
                 bb.flip();
-                while (bb.hasRemaining()) {
-                    time <<= 8;
-                    time |= bb.get() & 255;
-                }
-                bb.clear();
             }
-            System.out.println(new Date(time));
+            Charset charset = StandardCharsets.UTF_8;
+            System.out.println(charset.decode(bb).toString());
+            bb.clear();
             sc.close();
         } catch (IOException e) {
             e.printStackTrace();

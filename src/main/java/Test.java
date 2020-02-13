@@ -1,4 +1,5 @@
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author @Jasu
@@ -8,6 +9,10 @@ public class Test {
     static ExecutorService service = Executors.newFixedThreadPool(3);
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
+
+        AtomicLong a;
+
+        ConcurrentHashMap c;
         for (int i = 0; i < 9; i++) {
             CompletableFuture.runAsync(new A(),service).thenRunAsync(new B(),service).thenRunAsync(new C(),service).get();
         }
