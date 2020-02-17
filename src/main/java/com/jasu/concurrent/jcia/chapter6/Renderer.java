@@ -6,46 +6,48 @@ import java.util.concurrent.*;
 
 /*****************************************
  * @author: Jasu Wong
- * @Date: 2020-02-17 1:21
+ * @Date: 2020-02-17 1:41
  *****************************************/
-public class FutureRenderer {
-    private final ExecutorService executor = Executors.newFixedThreadPool(100);
+public class Renderer {
+    private final ExecutorService executor;
+
+
+    public Renderer(ExecutorService executor) {
+        this.executor = executor;
+    }
 
     void renderPage(CharSequence source) {
-        final List<ImageInfo> imageInfos = scanForImageInfo(source);
-
-        Callable<List<ImageData>> callable = new Callable<List<ImageData>>() {
-
-            @Override
-            public List<ImageData> call() throws Exception {
-                List<ImageData> imageData = new ArrayList<>();
-                for (ImageInfo imageInfo : imageInfos) {
-                    imageData.add(imageInfo.downloadImage());
+        final List<Renderer.ImageInfo> imageInfos = scanForImageInfo(source);
+        CompletionService<ImageData> completionService = new ExecutorCompletionService<>(executor);
+        for (ImageInfo imageInfo : imageInfos) {
+            completionService.submit(new Callable<ImageData>() {
+                @Override
+                public ImageData call() throws Exception {
+                    return imageInfo.downloadImage();
                 }
-                return imageData;
-            }
-        };
-
-        Future<List<ImageData>> future = executor.submit(callable);
+            });
+        }
 
         renderText(source);
 
         try {
-            List<ImageData> imageData = future.get();
-            for (ImageData imageDatum : imageData) {
-                renderImage(imageDatum);
+            for (ImageInfo imageInfo : imageInfos) {
+                Future<ImageData> future = completionService.take();
+                ImageData imageData = future.get();
+                renderImage(imageData);
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            future.cancel(true);
         } catch (ExecutionException e) {
             throw launderThrowable(e.getCause());
         }
 
     }
+
     private void renderText(CharSequence source) {
 
     }
+
     private RuntimeException launderThrowable(Throwable t) {
         if (t instanceof RuntimeException) {
             return (RuntimeException) t;
@@ -56,16 +58,16 @@ public class FutureRenderer {
         }
     }
 
-    private void renderImage(ImageData imageDatum) {
+    private void renderImage(Renderer.ImageData imageDatum) {
 
     }
 
-    private List<ImageInfo> scanForImageInfo(CharSequence source) {
+    private List<Renderer.ImageInfo> scanForImageInfo(CharSequence source) {
         return null;
     }
 
     private class ImageInfo {
-        public ImageData downloadImage() {
+        public Renderer.ImageData downloadImage() {
             return null;
         }
     }
