@@ -19,7 +19,7 @@ public class Test {
 
     }
 
-    static class A implements Runnable {
+    static class A extends Thread {
         @Override
         public void run() {
             try {
@@ -31,7 +31,7 @@ public class Test {
         }
     }
 
-    static class B implements Runnable {
+    static class B extends Thread {
         @Override
         public void run() {
             try {
@@ -42,7 +42,7 @@ public class Test {
             System.out.println("B " + Thread.currentThread().getName());
         }
     }
-    static class C implements Runnable {
+    static class C extends Thread {
         @Override
         public void run() {
             try {
