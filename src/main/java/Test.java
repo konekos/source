@@ -1,3 +1,5 @@
+import org.apache.dubbo.remoting.exchange.support.DefaultFuture;
+
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -10,13 +12,9 @@ public class Test {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
 
-        AtomicLong a;
-
-        ConcurrentHashMap c;
-        for (int i = 0; i < 9; i++) {
-            CompletableFuture.runAsync(new A(),service).thenRunAsync(new B(),service).thenRunAsync(new C(),service).get();
+        while (true) {
+            TimeUnit.SECONDS.sleep(10);
         }
-
     }
 
     static class A extends Thread {
