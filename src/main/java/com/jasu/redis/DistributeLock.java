@@ -12,9 +12,10 @@ import java.util.Collections;
 public class DistributeLock {
     private static String luaScript = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del',KEYS[1]) else return 0 end";
     private static final Long lockReleaseOK = 1L;
-    private static JedisPool jedis = new JedisPool("192.168.0.73", 6379);
+    private static JedisPool jedis = new JedisPool("127.0.0.1", 6379);
     public static void main(String[] args) {
         getJedisPool().getResource().setnx("1","2");
+        System.out.println(getJedisPool().getResource().get("1"));
     }
 
     public static boolean releaseLock(String key ,String lockValue){
