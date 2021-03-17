@@ -1,6 +1,5 @@
 package com.jasu.spring.service;
 
-import com.jasu.spring.annotation.Idempotent;
 import com.jasu.spring.dao.TestDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.PessimisticLockingFailureException;

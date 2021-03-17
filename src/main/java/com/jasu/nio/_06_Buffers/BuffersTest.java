@@ -6,9 +6,6 @@ import java.io.IOException;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
-import java.nio.channels.WritableByteChannel;
 
 /**
  * @author @Jasu

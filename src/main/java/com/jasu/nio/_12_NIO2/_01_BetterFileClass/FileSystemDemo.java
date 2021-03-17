@@ -1,6 +1,5 @@
 package com.jasu.nio._12_NIO2._01_BetterFileClass;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;

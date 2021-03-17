@@ -2,12 +2,11 @@ package com.jasu.netty.chapter02;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.*;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.CharsetUtil;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * @author @Jasu

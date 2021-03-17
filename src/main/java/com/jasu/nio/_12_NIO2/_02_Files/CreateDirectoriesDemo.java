@@ -1,6 +1,5 @@
 package com.jasu.nio._12_NIO2._02_Files;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

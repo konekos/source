@@ -6,8 +6,8 @@ package com.jasu.nio._04_Streams;
  */
 
 import java.io.FilterInputStream;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class ScrambledInputStream extends FilterInputStream {
     private int[] map;

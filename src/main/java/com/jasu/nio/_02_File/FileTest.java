@@ -2,10 +2,10 @@ package com.jasu.nio._02_File;
 
 import org.junit.Test;
 
-import java.io.*;
-
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 
 /**
  * @author @Jasu
