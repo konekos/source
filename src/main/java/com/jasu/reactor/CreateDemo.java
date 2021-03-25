@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CreateDemo {
-    static MyEventProcessor<String> myEventProcessor = new MyEventProcessor();
-
+    static MyEventProcessor<String> myEventProcessor = new MyEventProcessor<>();
+    static MyMessageProcessor<String> myMessageProcessor = new MyMessageProcessor<>();
     public static void main(String[] args) {
         Flux<String> flux = Flux.create(fluxSink -> {
             myEventProcessor.register(new MyEventListener<String>() {
@@ -53,7 +53,28 @@ public class CreateDemo {
                     });
         });
 
-        bridge.doOnNext(System.out::println).subscribe();
+//        bridge.doOnNext(System.out::println).subscribe();
+
+
+        Flux<String> bridge1 = Flux.create(sink -> {
+            myMessageProcessor.register(
+                    new MyMessageListener<String>() {
+
+                        public void onMessage(List<String> messages) {
+                            for(String s : messages) {
+                                sink.next(s);
+                            }
+                        }
+                    });
+            sink.onRequest(n -> {
+                List<String> messages = myMessageProcessor.getHistory(n);
+                for(String s : messages) {
+                    sink.next(s);
+                }
+            });
+        });
+
+        bridge1.doOnNext(System.out::println).subscribe();
     }
 
     interface MyEventListener<T> {
@@ -67,6 +88,10 @@ public class CreateDemo {
         void processError(Throwable e);
     }
 
+    interface MyMessageListener<T> {
+        void onMessage(List<T> messages);
+    }
+
     private static class MyEventProcessor<T> {
         void register(MyEventListener<T> listener) {
             List list = Lists.newArrayList("1", "2", "3");
@@ -77,4 +102,17 @@ public class CreateDemo {
             listener.onDataChunk((List)Lists.newArrayList("1", "2", "3"));
         }
     }
+
+    private static class MyMessageProcessor<T>{
+        void register(MyMessageListener<T> listener){
+            listener.onMessage((List) Lists.newArrayList("1", "2", "4"));
+
+        }
+
+        List<T> getHistory(long n){
+            return (List) Lists.newArrayList("2", "7", "8");
+        }
+    }
+
+
 }
